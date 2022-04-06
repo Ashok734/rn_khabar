@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+  <section id="slider-wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 mb-4">
+          <div class="news owl-carousel owl-theme">
+            <div class="item">
+              <div class="card bg-dark text-white">
+                <img src="{{first_news.image.url}}" class="card-img" alt="img">
+                <div class="card-img-overlay">
+                  <h5 class="card-title"><span class="news-type">{{first_news.type}}</span></h5>
+                  <a href="/detail/{{first_news.id}}">
+                    <p class="card-text">{{first_news.title | truncatechars:200}}</p>
+                  </a>
+                  <p class="card-text-date">
+                    <span class="date">{{first_news.add_time}}</span> /
+                    <span class="name">BY {{first_news.author}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+           
+          </div>
+        </div>
+        <div class="col-md-4">
+          {% for news in three_news %}
+          <div class="card bg-dark text-white">
+            <img src="{{news.image.url}}" class="card-img" alt="img">
+            <div class="card-img-overlay">
+              <h5 class="card-title"><span class="news-type">{{news.type}}</span></h5>
+              <a href="/detail/{{news.id}}">
+                <p class="card-text">{{news.title | truncatechars:100 }}</p>
+              </a>
+              <p class="card-text-date">
+                <span class="date">{{news.add_time}}</span> /
+                <span class="name">BY {{news.author}}</span>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="news-wrapper">
+    <div class="container">
+      
+      {% for category in three_categories %}
+      <h2>{{category.title}}</h2>
+      <hr>
+      <div class="row">
+        {% for news in category.news_set.all %}
+		{% if forloop.revcounter < 9 %}
+        <div class="col-md-3">
+          <div class="card mb-4">
+            <a href="/detail/{{news.id}}">
+              <img src="{{news.image.url}}" class="card-img-top" alt="img">
+              <div class="card-body">
+                <h5 class="card-title">{{news.title | truncatechars:100 }}</h5>
+                <p class="card-text">{{news.detail | truncatechars:100 | safe }}
+                </p>
+                <span>By : {{news.author}}</span> <span>/</span>
+                <span>{{news.type}}</span> <span>/</span>
+                <span>{{news.add_time | date:"d M Y"}}</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      
+
+        {% endif %}
+	  	{% endfor %}
+      </div>
+       
+      {% endfor %}
+     
+    </div>
+  </section>
+     
+ {% endblock %}
